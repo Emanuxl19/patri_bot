@@ -246,7 +246,26 @@ async def remover_confirm(update: Update, context: ContextTypes.DEFAULT_TYPE):
     context.user_data.clear()
     return ConversationHandler.END
 
+async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Cancela a operação atual e limpa os dados do usuário."""
+    await update.message.reply_text("Operação cancelada.")
+    context.user_data.clear()
+    return ConversationHandler.END
 
+async def ajuda(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Exibe uma mensagem de ajuda com todos os comandos disponíveis."""
+    texto_ajuda = (
+        "Olá! Eu sou o seu bot de gestão de patrimônio. Aqui estão os comandos que você pode usar:\n\n"
+        "*/add* - Inicia o cadastro de um novo patrimônio.\n"
+        "*/search <termo>* - Procura um patrimônio pelo número ou nome do usuário.\n"
+        "*/update <número>* - Inicia a atualização de um patrimônio existente.\n"
+        "*/remove <número>* - Remove um patrimônio do registro.\n"
+        "*/unlink_user <número>* - Desvincula um usuário de um patrimônio.\n"
+        "*/export* - Gera uma planilha Excel com todos os dados.\n"
+        "*/cancel* - Cancela a operação atual (como /add ou /update).\n"
+        "*/ajuda* - Mostra esta mensagem de ajuda."
+    )
+    await update.message.reply_text(texto_ajuda, parse_mode='Markdown')
 
 async def unlink_user_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     args = context.args
