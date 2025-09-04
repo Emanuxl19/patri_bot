@@ -1,5 +1,3 @@
-# db_manager.py
-
 import pyodbc
 from config import SQL_SERVER_CONNECTION
 from models.asset import Asset
@@ -36,9 +34,9 @@ class DBManager:
         IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Assets' and xtype='U')
         CREATE TABLE Assets (
             id INT IDENTITY(1,1) PRIMARY KEY,
-            user NVARCHAR(100),
+            [user] NVARCHAR(100),
             department NVARCHAR(100),
-            type NVARCHAR(50),
+            [type] NVARCHAR(50),
             patrimony_number NVARCHAR(50) UNIQUE,
             equipment NVARCHAR(100),
             serial_number NVARCHAR(100),
@@ -57,14 +55,15 @@ class DBManager:
         if not self.conn:
             return
         self.cursor.execute("""
-                            INSERT INTO Assets
-                            (user, department, type, patrimony_number, equipment, serial_number,
-                             invoice_number, purchase_date, warranty_end_date, status, observations)
-                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                            """,
-                            asset.user, asset.department, asset.type, asset.patrimony_number, asset.equipment,
-                            asset.serial_number, asset.invoice_number, asset.purchase_date, asset.warranty_end_date,
-                            asset.status, asset.observations)
+            INSERT INTO Assets
+            ([user], department, [type], patrimony_number, equipment, serial_number,
+             invoice_number, purchase_date, warranty_end_date, status, observations)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """,
+            asset.user, asset.department, asset.type, asset.patrimony_number, asset.equipment,
+            asset.serial_number, asset.invoice_number, asset.purchase_date, asset.warranty_end_date,
+            asset.status, asset.observations
+        )
         self.conn.commit()
 
     def get_asset_by_patrimony_number(self, patrimony_number: str):
@@ -78,7 +77,7 @@ class DBManager:
         """Retrieves all assets assigned to a specific user (partial match)."""
         if not self.conn:
             return []
-        self.cursor.execute("SELECT * FROM Assets WHERE user LIKE ?", f"%{user}%")
+        self.cursor.execute("SELECT * FROM Assets WHERE [user] LIKE ?", f"%{user}%")
         return self.cursor.fetchall()
 
     def get_all_assets(self):
@@ -92,7 +91,8 @@ class DBManager:
         """Updates a specific field of an asset."""
         if not self.conn:
             return False
-        sql_query = f"UPDATE Assets SET {field} = ? WHERE patrimony_number = ?"
+
+        sql_query = f"UPDATE Assets SET [{field}] = ? WHERE patrimony_number = ?"
         self.cursor.execute(sql_query, new_value, patrimony_number)
         self.conn.commit()
         return self.cursor.rowcount > 0

@@ -1,5 +1,3 @@
-# repository/excel_manager.py
-
 from openpyxl import Workbook
 from datetime import date
 from config import EXCEL_PATH, DATA_FOLDER
