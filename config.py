@@ -1,13 +1,13 @@
 import os
 
-TELEGRAM_TOKEN = "7790027827:AAFdUzmw3Jrvb3R5lcHvfGTxPXamnAvaXzg"
+TELEGRAM_TOKEN = "7790027827:AAGfOTBs65rp25ERJI0sAH4RJzrUEBJ9-FE"
 
 SQL_SERVER_CONNECTION = (
     "DRIVER={ODBC Driver 17 for SQL Server};"
-    "SERVER=YourServerName;"
-    "DATABASE=PatrimonioDB;"
-    "UID=YourUser;"
-    "PWD=YourPassword"
+    "SERVER=patribot.database.windows.net;"  
+    "DATABASE=Bot_patrimonio;"              
+    "UID=Emanuel.martins;"                  
+    "PWD=BotTeste2025"
 )
 
 DATA_FOLDER = "data"
